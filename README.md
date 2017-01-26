@@ -1,5 +1,5 @@
 # ScreenCaster.dnc
-ScreenCasting app based on ASP.NET Core
+Small Proof of Concept ScreenCasting app based on ASP.NET Core.
 
 ## Build
 ```
@@ -9,5 +9,10 @@ dotnet build
 
 ## Run
 ```
-dotnet run
+start "ScreenCasting" dotnet run
+```
+
+## Watch
+```
+start http://localhost:5000/index.html
 ```
