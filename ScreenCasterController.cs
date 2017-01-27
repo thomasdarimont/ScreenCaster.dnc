@@ -11,22 +11,22 @@ namespace ScreenCaster
     public class ScreenCasterController : Controller
     {
 
-        private readonly ScreenGrabber screenGrabber;
+        private readonly ScreenGrabber _screenGrabber;
 
         public ScreenCasterController(ScreenGrabber screenGrabber){
-            this.screenGrabber = screenGrabber;
+            _screenGrabber = screenGrabber;
         }
 
         [HttpGet]
         public string Ping()
         {
-            return string.Format("{0}",DateTime.Now);
+            return $"Server Time: {DateTime.Now}";
         }
  
         [HttpGet("get_image")]
         public FileResult GetImage()
         {
-            return new FileStreamResult(new MemoryStream(screenGrabber.WaitForNextAvailableImage()), "image/jpg");
+            return new FileStreamResult(new MemoryStream(_screenGrabber.WaitForNextAvailableImage()), "image/jpg");
         }
     }
 }

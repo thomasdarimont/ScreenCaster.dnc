@@ -7,35 +7,34 @@ namespace ScreenCaster
 {
     public class ScreenGrabber
     {
-        private readonly Timer timer;
+        private readonly Timer _timer;
 
-        private byte[] currentImageData;
+        private byte[] _currentImageData;
 
         public ScreenGrabber()
         {
-            timer = new Timer(_ => TimerElapsed(), null, 0, 1000);
-            timer.Change(0,0);
+            _timer = new Timer(_ => TimerElapsed(), null, 0, 0);
         }
 
         public void Start()
         {
-            timer.Change(0,150);
+            _timer.Change(0,150);
         }
 
         public byte[] WaitForNextAvailableImage()
         {
-            byte[] imageData = currentImageData;
+            var imageData = _currentImageData;
             while (imageData == null)
             {
-                imageData = currentImageData;
-                System.Threading.Thread.Sleep(50);
+                imageData = _currentImageData;
+                Thread.Sleep(50);
             }
             return imageData;
         }
 
         private void TimerElapsed()
         {
-            Interlocked.Exchange(ref currentImageData, CaptureScreenshotAsBytes());
+            Interlocked.Exchange(ref _currentImageData, CaptureScreenshotAsBytes());
         }
 
         private byte[] CaptureScreenshotAsBytes()
@@ -49,7 +48,7 @@ namespace ScreenCaster
             Graphics.FromImage(offScreenImage)
                     .CopyFromScreen(0, 0, 0, 0, offScreenImage.Size, CopyPixelOperation.SourceCopy);
 
-            using (MemoryStream imageData = new MemoryStream())
+            using (var imageData = new MemoryStream())
             {
                 offScreenImage.Save(imageData, ImageFormat.Jpeg);
                 return imageData.ToArray();

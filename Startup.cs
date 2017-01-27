@@ -18,7 +18,7 @@ namespace ScreenCaster
         {
             services.AddMvc();
 
-            ScreenGrabber screenGrabber = new ScreenGrabber();
+            var screenGrabber = new ScreenGrabber();
             services.AddSingleton(typeof(ScreenGrabber), screenGrabber);
 
             screenGrabber.Start();
